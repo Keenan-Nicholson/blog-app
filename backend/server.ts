@@ -42,18 +42,6 @@ async function createTableIfNotExists() {
 
 createTableIfNotExists();
 
-app.get("/testdb", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT 1");
-    res.json({ success: true, message: "Database connection is working!" });
-  } catch (error) {
-    console.error("Error executing test query", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error connecting to the database" });
-  }
-});
-
 app.post("/posts", async (req, res) => {
   const { title, content, author } = req.body;
   const createPostQuery = `
@@ -67,6 +55,20 @@ app.post("/posts", async (req, res) => {
   } catch (error) {
     console.error("Error executing create post query", error);
     res.status(500).json({ success: false, message: "Error creating post" });
+  }
+});
+
+app.get("/posts", async (req, res) => {
+  const getPostsQuery = `
+    SELECT * FROM posts
+    ORDER BY created_at DESC;
+  `;
+  try {
+    const result = await pool.query(getPostsQuery);
+    res.json({ success: true, posts: result.rows });
+  } catch (error) {
+    console.error("Error executing get posts query", error);
+    res.status(500).json({ success: false, message: "Error fetching posts" });
   }
 });
 

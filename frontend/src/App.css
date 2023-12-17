@@ -16,7 +16,8 @@ nav {
   padding: 1rem;
 }
 
-form {
+form,
+#post-links {
   display: flex;
   flex-direction: column;
   align-items: center;
