@@ -4,6 +4,7 @@
   text-align: center;
 }
 
+/* TODO fix the nav bar covering the top of the page content*/
 nav {
   display: flex;
   justify-content: space-between;
@@ -16,8 +17,7 @@ nav {
   padding: 1rem;
 }
 
-form,
-#post-links {
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,6 +25,30 @@ form,
   width: 90%;
   height: 100%;
   margin: 0 auto;
+}
+
+#post-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 90%;
+}
+
+#post-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+#post-details p {
+  text-align: left;
+  white-space: pre-line;
 }
 
 button,

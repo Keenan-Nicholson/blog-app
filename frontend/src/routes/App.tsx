@@ -1,7 +1,8 @@
 import "../App.css";
 import { NavBar } from "../components/NavBar";
+import { Link } from "react-router-dom";
 
-const getPostData = async () => {
+export const getPostData = async () => {
   try {
     const response = await fetch("http://127.0.0.1:3001/posts", {
       method: "GET",
@@ -20,6 +21,7 @@ const getPostData = async () => {
 const postData = await getPostData();
 
 // TODO: get rid of the any type in the map function
+// TODO: make this into a useQuery hook as well instead of doing this. Not sure why but this feels wrong
 export const App = () => {
   return (
     <div className="App">
@@ -28,9 +30,9 @@ export const App = () => {
         {Object.entries(postData.posts).map(([key, value]: any) => {
           return (
             <div key={key}>
-              <a href={`/`}>
+              <Link to={`/posts/${value.post_id}`}>
                 {value.title} - {value.author}
-              </a>
+              </Link>
             </div>
           );
         })}

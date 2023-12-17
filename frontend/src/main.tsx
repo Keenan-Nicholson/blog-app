@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { App } from "./routes/App";
 import { CreatePost } from "./routes/CreatePost";
+import { PostDetails } from "./components/PostDetails";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/create-post",
     element: <CreatePost />,
+  },
+  {
+    path: "/posts/:post_id",
+    element: <PostDetails />,
   },
 ]);
 
