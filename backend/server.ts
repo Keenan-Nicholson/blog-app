@@ -3,7 +3,7 @@ const { Pool } = require("pg");
 const cors = require("cors");
 
 const app = express();
-const port = 8000;
+const port = 3001;
 
 const corsOptions = {
   origin: "*",
@@ -51,6 +51,22 @@ app.get("/testdb", async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Error connecting to the database" });
+  }
+});
+
+app.post("/posts", async (req, res) => {
+  const { title, content, author } = req.body;
+  const createPostQuery = `
+    INSERT INTO posts (title, content, author)
+    VALUES ($1, $2, $3)
+    RETURNING *
+    `;
+  try {
+    const result = await pool.query(createPostQuery, [title, content, author]);
+    res.json({ success: true, post: result.rows[0] });
+  } catch (error) {
+    console.error("Error executing create post query", error);
+    res.status(500).json({ success: false, message: "Error creating post" });
   }
 });
 

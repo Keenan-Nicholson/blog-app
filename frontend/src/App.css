@@ -1,42 +1,57 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100vw;
+  margin: auto;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+nav {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 98%;
+  z-index: 1;
+  color: #fff;
+  padding: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
 }
 
-.card {
-  padding: 2em;
+button,
+input {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  max-width: fit-content;
+  text-align: center;
+  margin: 0.5rem;
 }
 
-.read-the-docs {
-  color: #888;
+button:hover,
+input:hover {
+  background-color: #555;
+}
+
+#home-button {
+  margin-right: auto;
+}
+
+#create-post-button {
+  margin-left: auto;
+}
+
+#post-content {
+  width: 75%;
+  height: 300px;
 }
