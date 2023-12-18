@@ -5,8 +5,10 @@ export const NavBar = () => {
         <a href="/">
           <button>Home</button>
         </a>
-        <input type="text" id="search-bar" placeholder="Search" />
-
+        <a href="/login">
+          {" "}
+          <button>Login</button>
+        </a>
         <a href="/create-post">
           <button id="create-post-button"> Create Post </button>
         </a>

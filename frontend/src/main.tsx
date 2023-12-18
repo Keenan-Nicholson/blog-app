@@ -9,11 +9,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { App } from "./routes/App";
 import { CreatePost } from "./routes/CreatePost";
 import { PostDetails } from "./components/PostDetails";
+import { Login } from "./routes/Login";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
   },
+  { path: "/login", element: <Login /> },
   {
     path: "/create-post",
     element: <CreatePost />,
