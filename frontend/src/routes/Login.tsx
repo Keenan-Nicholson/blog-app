@@ -9,6 +9,8 @@ const postLogin = async (username: String, password: String) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
+
       body: JSON.stringify({ username, password }),
     });
 

@@ -10,8 +10,9 @@ const app = express();
 const port = 3001;
 
 const corsOptions = {
-  origin: "*",
+  origin: "http://127.0.0.1:5173",
   optionsSuccessStatus: 200,
+  credentials: true,
 };
 
 const pool = new Pool({
@@ -152,6 +153,10 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/whoami", (req, res) => {
+  console.log("Session User:", req.session.user);
+  console.log(req.session);
+  console.log(req.session.user);
+
   if (req.session && req.session.user) {
     res.json({ success: true, user: req.session.user });
   } else {
