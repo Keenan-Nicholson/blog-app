@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import "../App.css";
 import { NavBar } from "../components/NavBar";
 import { Link } from "react-router-dom";
@@ -18,11 +19,25 @@ export const getPostData = async () => {
   }
 };
 
-const postData = await getPostData();
-
 // TODO: get rid of the any type in the map function
-// TODO: make this into a useQuery hook as well instead of doing this. Not sure why but this feels wrong
 export const App = () => {
+  const {
+    data: postData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPostData,
+  });
+
+  if (isLoading) {
+    return <span className="loader"></span>;
+  }
+
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
+
   return (
     <div className="App">
       <NavBar />

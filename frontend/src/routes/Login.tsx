@@ -1,6 +1,6 @@
 import { NavBar } from "../components/NavBar";
-import "../App.css";
 import { useMutation } from "@tanstack/react-query";
+import "../App.css";
 
 const postLogin = async (username: String, password: String) => {
   try {
@@ -54,7 +54,7 @@ export const Login = () => {
   return (
     <div>
       <NavBar />
-      <form onSubmit={handleSubmit}>
+      <form id="login-form" onSubmit={handleSubmit}>
         <label>
           Username:
           <input type="text" name="username" />
@@ -63,7 +63,7 @@ export const Login = () => {
           Password:
           <input type="text" name="password" />
         </label>
-        <input type="submit" value="Submit" />
+        <button type="submit"> Submit </button>
       </form>
     </div>
   );

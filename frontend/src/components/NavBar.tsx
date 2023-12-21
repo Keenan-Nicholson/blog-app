@@ -6,7 +6,6 @@ export const NavBar = () => {
           <button>Home</button>
         </a>
         <a href="/login">
-          {" "}
           <button>Login</button>
         </a>
         <a href="/create-post">
