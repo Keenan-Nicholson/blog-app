@@ -153,10 +153,6 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/whoami", (req, res) => {
-  console.log("Session User:", req.session.user);
-  console.log(req.session);
-  console.log(req.session.user);
-
   if (req.session && req.session.user) {
     res.json({ success: true, user: req.session.user });
   } else {

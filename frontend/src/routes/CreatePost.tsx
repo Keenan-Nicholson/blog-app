@@ -1,9 +1,15 @@
 import "../App.css";
 import { NavBar } from "../components/NavBar";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const createPost = async (title: String, content: String, author: String) => {
   try {
+    const isAuthenticated = await checkAuthentication();
+
+    if (!isAuthenticated.success) {
+      console.error("User not authenticated");
+      return;
+    }
     const response = await fetch("http://127.0.0.1:3001/posts", {
       method: "POST",
       headers: {
@@ -19,7 +25,31 @@ const createPost = async (title: String, content: String, author: String) => {
   }
 };
 
+const checkAuthentication = async () => {
+  try {
+    const response = await fetch("http://127.0.0.1:3001/whoami", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    console.log("Success:", result);
+    return result;
+  } catch (error) {
+    console.error("Error:", error);
+    return false;
+  }
+};
+
 export const CreatePost = () => {
+  const { data: authenticated } = useQuery({
+    queryKey: ["authenticated"],
+    queryFn: checkAuthentication,
+  });
+
   const { mutate } = useMutation({
     mutationFn: ({
       title,
@@ -35,7 +65,14 @@ export const CreatePost = () => {
     },
   });
 
+  // TODO: figure out why toast.error doesnt work here
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!authenticated.success) {
+      alert("You must be logged in to create a post");
+      return;
+    }
+
     event.preventDefault();
     const { target } = event;
     const inputs = [...(target as unknown as HTMLInputElement[])];
@@ -49,7 +86,7 @@ export const CreatePost = () => {
     mutate({
       title: formData.title,
       content: formData.content,
-      author: formData.author,
+      author: authenticated.user.username,
     });
   };
 
@@ -63,8 +100,6 @@ export const CreatePost = () => {
           <input type="text" id="title" name="title" />
           <label htmlFor="post-content">Content</label>
           <textarea id="post-content" name="content" />
-          <label htmlFor="author">Author</label>
-          <input type="text" id="author" name="author" />
           <button type="submit">Submit</button>
         </form>
       </div>
