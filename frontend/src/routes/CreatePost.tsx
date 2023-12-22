@@ -16,7 +16,6 @@ const createPost = async (title: String, content: String, author: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
-    toast.success("Post created successfully");
   } catch (error) {
     console.error("Error:", error);
   }
@@ -42,7 +41,7 @@ const checkAuthentication = async () => {
 };
 
 export const CreatePost = () => {
-  const { data: authenticated, isError } = useQuery({
+  const { data: authenticated } = useQuery({
     queryKey: ["authenticated"],
     queryFn: checkAuthentication,
   });
@@ -59,21 +58,19 @@ export const CreatePost = () => {
     }) => createPost(title, content, author),
     onSuccess: () => {
       console.log("Success");
-      toast.success("Post created successfully");
     },
   });
 
-  // TODO: figure out why toast.error doesnt work here
-  // i think this is not working bc whoami endpoint is not being accessed when the user is not logged in
-  // so there is nothing being returned in authenticated??
-
+  // TODO: toast.success("Post created successfully"); disappears too quickly unless
+  // returning after calling toast.success (see below with toast.error)
+  // page must be mounting immediately after toast.success is called or something?
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (!authenticated.success || isError) {
+    event.preventDefault();
+
+    if (!authenticated.success) {
       toast.error("You must be logged in to create a post");
       return;
     }
-
-    event.preventDefault();
     const { target } = event;
     const inputs = [...(target as unknown as HTMLInputElement[])];
     const formData = Object.fromEntries(

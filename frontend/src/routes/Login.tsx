@@ -18,10 +18,19 @@ const postLogin = async (username: String, password: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
-    toast.success("Login successful");
+
+    if (response.ok) {
+      console.log("Success:", result);
+      return { success: true, data: result };
+    } else if (response.status === 401) {
+      toast.error("Login unsuccessful");
+      return { success: false, error: "Login unsuccessful" };
+    } else {
+      console.error("Error:", response.statusText);
+      return { success: false, error: "An error occurred" };
+    }
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Login failed");
   }
 };
 
@@ -37,7 +46,6 @@ export const Login = () => {
     }) => postLogin(username, password),
     onSuccess: () => {
       console.log("Success");
-
       queryClient.invalidateQueries({ queryKey: ["authenticated"] });
     },
   });
