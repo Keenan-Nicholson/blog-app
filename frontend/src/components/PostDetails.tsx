@@ -8,11 +8,7 @@ export const PostDetails = () => {
   const cachedData = localStorage.getItem("cachedPosts");
   const initialData = cachedData ? JSON.parse(cachedData) : null;
 
-  const {
-    data: postData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: postData, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: getPostData,
     initialData,
@@ -31,11 +27,7 @@ export const PostDetails = () => {
   );
 
   if (isLoading) {
-    return <span className="loader"></span>;
-  }
-
-  if (isError) {
-    return console.error("Error fetching data");
+    return <div>Loading...</div>;
   }
 
   return (

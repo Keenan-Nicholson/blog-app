@@ -1,6 +1,8 @@
 import { NavBar } from "../components/NavBar";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import "../App.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const postLogin = async (username: String, password: String) => {
   try {
@@ -16,12 +18,15 @@ const postLogin = async (username: String, password: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
+    toast.success("Login successful");
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Login failed");
   }
 };
 
 export const Login = () => {
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: ({
       username,
@@ -32,6 +37,8 @@ export const Login = () => {
     }) => postLogin(username, password),
     onSuccess: () => {
       console.log("Success");
+
+      queryClient.invalidateQueries({ queryKey: ["authenticated"] });
     },
   });
 
@@ -51,20 +58,32 @@ export const Login = () => {
       password: formData.password,
     });
   };
+
   return (
     <div>
       <NavBar />
       <form id="login-form" onSubmit={handleSubmit}>
         <label>
           Username:
-          <input type="text" name="username" />
+          <input type="text" name="username" autoComplete="off" />
         </label>
         <label>
           Password:
-          <input type="text" name="password" />
+          <input type="password" name="password" autoComplete="off" />
         </label>
         <button type="submit"> Submit </button>
       </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={true}
+        draggable={true}
+        pauseOnHover={true}
+      />
     </div>
   );
 };

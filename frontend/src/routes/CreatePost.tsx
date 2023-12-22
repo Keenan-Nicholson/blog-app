@@ -1,15 +1,11 @@
 import "../App.css";
 import { NavBar } from "../components/NavBar";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const createPost = async (title: String, content: String, author: String) => {
   try {
-    const isAuthenticated = await checkAuthentication();
-
-    if (!isAuthenticated.success) {
-      console.error("User not authenticated");
-      return;
-    }
     const response = await fetch("http://127.0.0.1:3001/posts", {
       method: "POST",
       headers: {
@@ -20,6 +16,7 @@ const createPost = async (title: String, content: String, author: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
+    toast.success("Post created successfully");
   } catch (error) {
     console.error("Error:", error);
   }
@@ -45,7 +42,7 @@ const checkAuthentication = async () => {
 };
 
 export const CreatePost = () => {
-  const { data: authenticated } = useQuery({
+  const { data: authenticated, isError } = useQuery({
     queryKey: ["authenticated"],
     queryFn: checkAuthentication,
   });
@@ -62,14 +59,17 @@ export const CreatePost = () => {
     }) => createPost(title, content, author),
     onSuccess: () => {
       console.log("Success");
+      toast.success("Post created successfully");
     },
   });
 
   // TODO: figure out why toast.error doesnt work here
+  // i think this is not working bc whoami endpoint is not being accessed when the user is not logged in
+  // so there is nothing being returned in authenticated??
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (!authenticated.success) {
-      alert("You must be logged in to create a post");
+    if (!authenticated.success || isError) {
+      toast.error("You must be logged in to create a post");
       return;
     }
 
@@ -97,12 +97,23 @@ export const CreatePost = () => {
         <h3>Create a new post</h3>
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">Title</label>
-          <input type="text" id="title" name="title" />
+          <input type="text" id="title" name="title" autoComplete="off" />
           <label htmlFor="post-content">Content</label>
           <textarea id="post-content" name="content" />
           <button type="submit">Submit</button>
         </form>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={true}
+        draggable={true}
+        pauseOnHover={true}
+      />
     </div>
   );
 };

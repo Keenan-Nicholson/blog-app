@@ -21,21 +21,13 @@ export const getPostData = async () => {
 
 // TODO: get rid of the any type in the map function
 export const App = () => {
-  const {
-    data: postData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: postData, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: getPostData,
   });
 
   if (isLoading) {
-    return <span className="loader"></span>;
-  }
-
-  if (isError) {
-    return <div>Error fetching data</div>;
+    return <div>Loading...</div>;
   }
 
   return (

@@ -152,6 +152,17 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error logging out");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 app.get("/whoami", (req, res) => {
   if (req.session && req.session.user) {
     res.json({ success: true, user: req.session.user });
