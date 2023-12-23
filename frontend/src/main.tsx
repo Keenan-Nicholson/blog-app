@@ -10,21 +10,31 @@ import { App } from "./routes/App";
 import { CreatePost } from "./routes/CreatePost";
 import { PostDetails } from "./components/PostDetails";
 import { Login } from "./routes/Login";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  { path: "/login", element: <Login /> },
-  {
-    path: "/create-post",
-    element: <CreatePost />,
-  },
-  {
-    path: "/posts/:post_id",
-    element: <PostDetails />,
-  },
-]);
+import { Root } from "./routes/Root";
+
+const router = createBrowserRouter(
+  [
+    {
+      element: <Root />,
+      children: [
+        {
+          path: "/",
+          element: <App />,
+        },
+        { path: "/login", element: <Login /> },
+        {
+          path: "/create-post",
+          element: <CreatePost />,
+        },
+        {
+          path: "/posts/:post_id",
+          element: <PostDetails />,
+        },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL }
+);
 
 const queryClient = new QueryClient();
 

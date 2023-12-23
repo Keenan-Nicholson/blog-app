@@ -30,6 +30,31 @@ export const PostDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const handleDelete = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:3001/delete-post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ post_id: post.post_id }),
+      });
+      console.log(JSON.stringify({ post_id: post.post_id }));
+      if (!response.ok) {
+        console.error("Error:", response.status, response.statusText);
+        return;
+      }
+      if (response.status === 204) {
+        console.log("Success: Post deleted successfully");
+      } else {
+        const result = await response.json();
+        console.log("Success:", result);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div>
       <NavBar />
@@ -45,6 +70,8 @@ export const PostDetails = () => {
         <br />
         <br />
         {post.edited_at && <i>updated on {post.edited_at.substring(0, 10)}</i>}
+
+        <button onClick={handleDelete}>Delete</button>
       </div>
     </div>
   );

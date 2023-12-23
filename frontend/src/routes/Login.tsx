@@ -1,7 +1,6 @@
-import { NavBar } from "../components/NavBar";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import "../App.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const postLogin = async (username: String, password: String) => {
@@ -21,6 +20,7 @@ const postLogin = async (username: String, password: String) => {
 
     if (response.ok) {
       console.log("Success:", result);
+      toast.success("Login successful");
       return { success: true, data: result };
     } else if (response.status === 401) {
       toast.error("Login unsuccessful");
@@ -69,7 +69,6 @@ export const Login = () => {
 
   return (
     <div>
-      <NavBar />
       <form id="login-form" onSubmit={handleSubmit}>
         <label>
           Username:
@@ -81,17 +80,6 @@ export const Login = () => {
         </label>
         <button type="submit"> Submit </button>
       </form>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss={true}
-        draggable={true}
-        pauseOnHover={true}
-      />
     </div>
   );
 };

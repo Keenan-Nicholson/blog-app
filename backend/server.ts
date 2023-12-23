@@ -55,7 +55,7 @@ async function createTableIfNotExists() {
   const createLoginTableQuery = `
     CREATE TABLE IF NOT EXISTS login (
         login_id SERIAL PRIMARY KEY,
-        username VARCHAR(255) NOT NULL,
+        username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
@@ -161,6 +161,21 @@ app.post("/logout", (req, res) => {
       res.sendStatus(200);
     }
   });
+});
+
+app.post("/delet-post", async (req, res) => {
+  const { post_id } = req.body;
+  const deletePostQuery = `
+    DELETE FROM posts
+    WHERE post_id = $1
+    `;
+  try {
+    const result = await pool.query(deletePostQuery, [post_id]);
+    res.json({ success: true, post: result.rows[0] });
+  } catch (error) {
+    console.error("Error executing delete post query", error);
+    res.status(500).json({ success: false, message: "Error deleting post" });
+  }
 });
 
 app.get("/whoami", (req, res) => {

@@ -1,7 +1,6 @@
 import "../App.css";
-import { NavBar } from "../components/NavBar";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const createPost = async (title: String, content: String, author: String) => {
@@ -16,6 +15,7 @@ const createPost = async (title: String, content: String, author: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
+    toast.success("Post created successfully");
   } catch (error) {
     console.error("Error:", error);
   }
@@ -61,9 +61,6 @@ export const CreatePost = () => {
     },
   });
 
-  // TODO: toast.success("Post created successfully"); disappears too quickly unless
-  // returning after calling toast.success (see below with toast.error)
-  // page must be mounting immediately after toast.success is called or something?
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -89,7 +86,6 @@ export const CreatePost = () => {
 
   return (
     <div>
-      <NavBar />
       <div className="create-post">
         <h3>Create a new post</h3>
         <form onSubmit={handleSubmit}>
@@ -100,17 +96,6 @@ export const CreatePost = () => {
           <button type="submit">Submit</button>
         </form>
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss={true}
-        draggable={true}
-        pauseOnHover={true}
-      />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import "../App.css";
-import { NavBar } from "../components/NavBar";
 import { Link } from "react-router-dom";
 
 export const getPostData = async () => {
@@ -32,7 +31,6 @@ export const App = () => {
 
   return (
     <div className="App">
-      <NavBar />
       <div id="post-links">
         {Object.entries(postData.posts).map(([key, value]: any) => {
           return (
