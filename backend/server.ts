@@ -163,7 +163,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.post("/delet-post", async (req, res) => {
+app.post("/delete-post", async (req, res) => {
   const { post_id } = req.body;
   const deletePostQuery = `
     DELETE FROM posts
