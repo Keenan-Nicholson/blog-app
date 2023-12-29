@@ -178,6 +178,23 @@ app.post("/delete-post", async (req, res) => {
   }
 });
 
+app.post("/edit-post", async (req, res) => {
+  const { post_id, title, content } = req.body;
+  const editPostQuery = `
+    UPDATE posts
+    SET title = $1, content = $2, edited_at = CURRENT_TIMESTAMP
+    WHERE post_id = $3
+    RETURNING *
+    `;
+  try {
+    const result = await pool.query(editPostQuery, [title, content, post_id]);
+    res.json({ success: true, post: result.rows[0] });
+  } catch (error) {
+    console.error("Error executing edit post query", error);
+    res.status(500).json({ success: false, message: "Error editing post" });
+  }
+});
+
 app.get("/whoami", (req, res) => {
   if (req.session && req.session.user) {
     res.json({ success: true, user: req.session.user });

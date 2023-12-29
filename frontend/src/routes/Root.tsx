@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 
 export const Root = () => {
   return (
-    <div className="Map">
+    <div>
       <NavBar />
       <Outlet />
       <ToastContainer

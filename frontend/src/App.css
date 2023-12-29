@@ -82,6 +82,11 @@ button:hover {
   padding: 1rem;
   width: fit-content;
 }
+
+#post-details {
+  width: 90%;
+}
+
 #post-content {
   width: 60%;
   height: 475px;
