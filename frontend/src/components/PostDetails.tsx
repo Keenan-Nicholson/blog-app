@@ -44,7 +44,6 @@ export const PostDetails = () => {
       });
 
       const result = await response.json();
-      console.log("Success:", result);
       return result;
     } catch (error) {
       console.error("Error:", error);
@@ -66,7 +65,6 @@ export const PostDetails = () => {
         },
         body: JSON.stringify({ post_id: post.post_id }),
       });
-      console.log(JSON.stringify({ post_id: post.post_id }));
       if (!response.ok) {
         console.error("Error:", response.status, response.statusText);
         return;
@@ -74,8 +72,8 @@ export const PostDetails = () => {
       if (response.status === 204) {
         console.log("Success: Post deleted successfully");
       } else {
-        const result = await response.json();
-        console.log("Success:", result);
+        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        routeChange();
       }
     } catch (error) {
       console.error("Error:", error);
@@ -91,7 +89,6 @@ export const PostDetails = () => {
         },
         body: JSON.stringify({ post_id: post.post_id, title, content }),
       });
-      console.log(JSON.stringify({ post_id: post.post_id, title, content }));
       if (!response.ok) {
         console.error("Error:", response.status, response.statusText);
         return;
@@ -99,8 +96,6 @@ export const PostDetails = () => {
       if (response.status === 204) {
         console.log("Success: Post edited successfully");
       } else {
-        const result = await response.json();
-        console.log("Success:", result);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -113,8 +108,7 @@ export const PostDetails = () => {
 
   const navigate = useNavigate();
   const routeChange = () => {
-    let path = `/`;
-    navigate(path);
+    navigate("/");
   };
 
   const { mutate } = useMutation({
@@ -128,6 +122,11 @@ export const PostDetails = () => {
 
   const handleSaveClick = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (authenticated.user.username !== post.author) {
+      toast.error("You can only edit your own posts");
+      return;
+    }
 
     if (!authenticated.success) {
       toast.error("You must be logged in to edit a post");
@@ -155,8 +154,16 @@ export const PostDetails = () => {
   };
 
   const handleDeleteClick = () => {
+    if (authenticated.user.username !== post.author) {
+      toast.error("You can only delete your own posts");
+      return;
+    }
+
+    if (!authenticated.success) {
+      toast.error("You must be logged in to delete a post");
+      return;
+    }
     handleDelete();
-    routeChange();
   };
 
   const [isEditing, setIsEditing] = useState(false);

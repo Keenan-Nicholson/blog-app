@@ -11,6 +11,7 @@ import { CreatePost } from "./routes/CreatePost";
 import { PostDetails } from "./components/PostDetails";
 import { Login } from "./routes/Login";
 import { Root } from "./routes/Root";
+import { Register } from "./routes/Register";
 
 const router = createBrowserRouter(
   [
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
           element: <App />,
         },
         { path: "/login", element: <Login /> },
+        { path: "/register", element: <Register /> },
         {
           path: "/create-post",
           element: <CreatePost />,

@@ -2,6 +2,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import "../App.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const postLogin = async (username: String, password: String) => {
   try {
@@ -16,10 +17,8 @@ const postLogin = async (username: String, password: String) => {
     });
 
     const result = await response.json();
-    console.log("Success:", result);
 
     if (response.ok) {
-      console.log("Success:", result);
       toast.success("Login successful");
       return { success: true, data: result };
     } else if (response.status === 401) {
@@ -36,6 +35,11 @@ const postLogin = async (username: String, password: String) => {
 
 export const Login = () => {
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+  const routeChange = () => {
+    navigate("/");
+  };
   const { mutate } = useMutation({
     mutationFn: ({
       username,
@@ -47,6 +51,7 @@ export const Login = () => {
     onSuccess: () => {
       console.log("Success");
       queryClient.invalidateQueries({ queryKey: ["authenticated"] });
+      routeChange();
     },
   });
 

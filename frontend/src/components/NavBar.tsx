@@ -36,7 +36,6 @@ export const NavBar = () => {
         });
 
         const result = await response.json();
-        console.log("Success:", result);
         return result;
       } catch (error) {
         console.error("Error:", error);
@@ -55,6 +54,9 @@ export const NavBar = () => {
       <nav>
         <a href="/">
           <button>Home</button>
+        </a>
+        <a href="/register">
+          <button>Register</button>
         </a>
         {checkAuthentication.data?.success ? (
           <button onClick={handleLogout}>Logout</button>

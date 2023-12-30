@@ -152,6 +152,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  const login = await registerAccount(username, password);
+  if (login) {
+    req.session.user = {
+      id: login.login_id,
+      username: login.username,
+    };
+    res.json({ success: true, login });
+  } else {
+    res.status(500).json({ success: false, message: "Error registering" });
+  }
+});
+
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {

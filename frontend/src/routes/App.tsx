@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import "../App.css";
 import { Link } from "react-router-dom";
 
-// TODO: refetch data when delete post is successful so that the post list is updated
 export const getPostData = async () => {
   try {
     const response = await fetch("http://127.0.0.1:3001/posts", {
@@ -10,9 +9,6 @@ export const getPostData = async () => {
     });
     const result = await response.json();
 
-    console.log("Success:", result);
-
-    console.log(result);
     return result;
   } catch (error) {
     console.error("Error:", error);

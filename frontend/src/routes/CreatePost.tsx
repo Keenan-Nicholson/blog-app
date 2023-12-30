@@ -1,5 +1,6 @@
 import "../App.css";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,6 +16,7 @@ const createPost = async (title: String, content: String, author: String) => {
 
     const result = await response.json();
     console.log("Success:", result);
+
     toast.success("Post created successfully");
   } catch (error) {
     console.error("Error:", error);
@@ -32,7 +34,6 @@ const checkAuthentication = async () => {
     });
 
     const result = await response.json();
-    console.log("Success:", result);
     return result;
   } catch (error) {
     console.error("Error:", error);
@@ -41,10 +42,16 @@ const checkAuthentication = async () => {
 };
 
 export const CreatePost = () => {
+  const queryClient = useQueryClient();
   const { data: authenticated } = useQuery({
     queryKey: ["authenticated"],
     queryFn: checkAuthentication,
   });
+
+  const navigate = useNavigate();
+  const routeChange = () => {
+    navigate("/");
+  };
 
   const { mutate } = useMutation({
     mutationFn: ({
@@ -58,6 +65,8 @@ export const CreatePost = () => {
     }) => createPost(title, content, author),
     onSuccess: () => {
       console.log("Success");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      routeChange();
     },
   });
 
