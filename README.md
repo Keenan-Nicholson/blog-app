@@ -1,5 +1,11 @@
 # Local Development
 
+## Run the Docker container to host the database
+
+```bash
+docker compose up -d
+```
+
 ## Start the Frontend
 
 1. Install dependencies:
@@ -26,10 +32,4 @@ npm install
 
 ```bash
 node server.ts
-```
-
-## Run the Docker container to host the database
-
-```bash
-docker compose up -d
 ```

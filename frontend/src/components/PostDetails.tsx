@@ -173,7 +173,7 @@ export const PostDetails = () => {
   return (
     <div>
       <NavBar />
-      <div id="post-details">
+      <div id="post-details-editing">
         {isEditing ? (
           <form onSubmit={handleSaveClick}>
             <input
@@ -198,26 +198,28 @@ export const PostDetails = () => {
             </div>
           </form>
         ) : (
-          <>
-            <h3 id="post-title">{post.title}</h3>
-            <p>{post.content}</p>
-            <br />
-            <br />
-            <i>By {post.author}</i>
-            <br />
-            <br />
-            <i>Posted on {post.created_at.substring(0, 10)}</i>
-            <br />
-            <br />
-            {post.edited_at && (
-              <i>updated on {post.edited_at.substring(0, 10)}</i>
-            )}
-            <br />
+          <div>
+            <div id="post-details">
+              <h3 id="post-title">{post.title}</h3>
+              <p>{post.content}</p>
+              <br />
+              <br />
+              <i>By {post.author}</i>
+              <br />
+              <br />
+              <i>Posted on {post.created_at.substring(0, 10)}</i>
+              <br />
+              <br />
+              {post.edited_at && (
+                <i>updated on {post.edited_at.substring(0, 10)}</i>
+              )}
+              <br />
+            </div>
             <div>
               <button onClick={handleEditClick}>Edit</button>
               <button onClick={handleDeleteClick}>Delete</button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

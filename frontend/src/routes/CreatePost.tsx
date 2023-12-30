@@ -96,7 +96,6 @@ export const CreatePost = () => {
   return (
     <div>
       <div className="create-post">
-        <h3>Create a new post</h3>
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title" autoComplete="off" />
