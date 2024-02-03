@@ -5,21 +5,23 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const MemoryStore = require("memorystore")(session);
+const dotenv = require("dotenv");
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 const corsOptions = {
-  origin: "http://127.0.0.1:5173",
+  origin: "*",
   optionsSuccessStatus: 200,
   credentials: true,
 };
 
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  password: "password",
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 app.use(cors(corsOptions));
