@@ -6,15 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 const postLogin = async (username: String, password: String) => {
   try {
-    const response = await fetch("http://127.0.0.1:3001/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+    const response = await fetch(
+      "https://personal-blog-app-backend.fly.dev/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
 
-      body: JSON.stringify({ username, password }),
-    });
+        body: JSON.stringify({ username, password }),
+      }
+    );
 
     const result = await response.json();
 

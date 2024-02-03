@@ -2,13 +2,16 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const logOut = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:3001/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      "https://personal-blog-app-backend.fly.dev/logout",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     if (response.ok) {
       console.log("Logout successful");
@@ -27,13 +30,16 @@ export const NavBar = () => {
     queryKey: ["authenticated"],
     queryFn: async () => {
       try {
-        const response = await fetch("http://127.0.0.1:3001/whoami", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://personal-blog-app-backend.fly.dev/whoami",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         const result = await response.json();
         return result;

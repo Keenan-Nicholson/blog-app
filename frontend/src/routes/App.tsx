@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 
 export const getPostData = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:3001/posts", {
-      method: "GET",
-    });
+    const response = await fetch(
+      "https://personal-blog-app-backend.fly.dev/posts",
+      {
+        method: "GET",
+      }
+    );
     const result = await response.json();
 
     return result;

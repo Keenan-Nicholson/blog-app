@@ -6,13 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 const createPost = async (title: String, content: String, author: String) => {
   try {
-    const response = await fetch("http://127.0.0.1:3001/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, content, author }),
-    });
+    const response = await fetch(
+      "https://personal-blog-app-backend.fly.dev/posts",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content, author }),
+      }
+    );
 
     const result = await response.json();
     console.log("Success:", result);
@@ -25,13 +28,16 @@ const createPost = async (title: String, content: String, author: String) => {
 
 const checkAuthentication = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:3001/whoami", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      "https://personal-blog-app-backend.fly.dev/whoami",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     const result = await response.json();
     return result;

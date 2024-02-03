@@ -35,13 +35,16 @@ export const PostDetails = () => {
 
   const checkAuthentication = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/whoami", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://personal-blog-app-backend.fly.dev/whoami",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const result = await response.json();
       return result;
@@ -58,13 +61,16 @@ export const PostDetails = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/delete-post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ post_id: post.post_id }),
-      });
+      const response = await fetch(
+        "https://personal-blog-app-backend.fly.dev/delete-post",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ post_id: post.post_id }),
+        }
+      );
       if (!response.ok) {
         console.error("Error:", response.status, response.statusText);
         return;
@@ -82,13 +88,16 @@ export const PostDetails = () => {
 
   const editPost = async (title: String, content: String) => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/edit-post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ post_id: post.post_id, title, content }),
-      });
+      const response = await fetch(
+        "https://personal-blog-app-backend.fly.dev/edit-post",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ post_id: post.post_id, title, content }),
+        }
+      );
       if (!response.ok) {
         console.error("Error:", response.status, response.statusText);
         return;

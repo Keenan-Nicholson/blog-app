@@ -9,13 +9,16 @@ export const Register = () => {
 
   const checkAuthentication = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/whoami", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://personal-blog-app-backend.fly.dev/whoami",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const result = await response.json();
       return result;
@@ -32,15 +35,18 @@ export const Register = () => {
 
   const createAccount = async (username: String, password: String) => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+      const response = await fetch(
+        "https://personal-blog-app-backend.fly.dev/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
 
-        body: JSON.stringify({ username, password }),
-      });
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       const result = await response.json();
 
