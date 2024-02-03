@@ -8,10 +8,16 @@ const MemoryStore = require("memorystore")(session);
 const dotenv = require("dotenv");
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const corsOptions = {
-  origin: "*",
+  origin: [
+    "http://localhost",
+    "http://127.0.0.1",
+    "https://blog.pirated.tech",
+    "https://personal-blog-app-backend.fly.dev",
+    "https://personal-blog-app-db.fly.dev",
+  ],
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -19,7 +25,6 @@ const corsOptions = {
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
 });
