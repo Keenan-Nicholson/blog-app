@@ -28,11 +28,12 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url("./assets/8bit.jpg");
+  background-image: url("./assets/space.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+  image-rendering: crisp-edges;
 }
 
 h1 {
