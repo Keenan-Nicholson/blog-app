@@ -10,23 +10,35 @@ export const getPostData = async () => {
         method: "GET",
       }
     );
-    const result = await response.json();
 
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.statusText}`);
+    }
+
+    const result = await response.json();
     return result;
   } catch (error) {
     console.error("Error:", error);
+    throw error; // Re-throw the error to signal a failed query
   }
 };
 
-// TODO: get rid of the any type in the map function
 export const App = () => {
-  const { data: postData, isLoading } = useQuery({
+  const {
+    data: postData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["posts"],
     queryFn: getPostData,
   });
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (isError || !postData || !postData.posts) {
+    return <div>Error fetching posts</div>;
   }
 
   return (

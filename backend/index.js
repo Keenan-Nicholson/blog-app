@@ -3,9 +3,10 @@ const { Pool } = require("pg");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
-const pgSession = require("connect-pg-simple")(session);
 const MemoryStore = require("memorystore")(session);
 const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +14,9 @@ const port = process.env.PORT || 3000;
 const corsOptions = {
   origin: [
     "http://localhost",
-    "http://127.0.0.1",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
     "https://blog.pirated.tech",
     "https://personal-blog-app-backend.fly.dev",
     "https://personal-blog-app-db.fly.dev",
@@ -46,6 +49,26 @@ app.use(
     },
   })
 );
+
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ success: false, message: "User not authenticated" });
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  if (
+    req.session &&
+    req.session.user &&
+    req.session.user.username == "keeborg"
+  ) {
+    next();
+  } else {
+    res.status(401).json({ success: false, message: "Permission denied" });
+  }
+};
 
 async function createTableIfNotExists() {
   const createPostTableQuery = `
@@ -80,7 +103,7 @@ async function createTableIfNotExists() {
 
 createTableIfNotExists();
 
-app.post("/posts", async (req, res) => {
+app.post("/posts", isAuthenticated, async (req, res) => {
   const { title, content, author } = req.body;
   const createPostQuery = `
     INSERT INTO posts (title, content, author)
@@ -159,7 +182,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/register", async (req, res) => {
+app.post("/register", isAuthenticated, async (req, res) => {
   const { username, password } = req.body;
   const login = await registerAccount(username, password);
   if (login) {
@@ -184,7 +207,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.post("/delete-post", async (req, res) => {
+app.post("/delete-post", isAuthenticated, async (req, res) => {
   const { post_id } = req.body;
   const deletePostQuery = `
     DELETE FROM posts
@@ -199,7 +222,7 @@ app.post("/delete-post", async (req, res) => {
   }
 });
 
-app.post("/edit-post", async (req, res) => {
+app.post("/edit-post", isAuthenticated, async (req, res) => {
   const { post_id, title, content } = req.body;
   const editPostQuery = `
     UPDATE posts
@@ -213,6 +236,21 @@ app.post("/edit-post", async (req, res) => {
   } catch (error) {
     console.error("Error executing edit post query", error);
     res.status(500).json({ success: false, message: "Error editing post" });
+  }
+});
+
+app.post("/delete-account", isAdmin, async (req, res) => {
+  const { username } = req.body;
+  const deleteAccountQuery = `
+      DELETE FROM login
+      WHERE username = $1
+      `;
+  try {
+    const result = await pool.query(deleteAccountQuery, [username]);
+    res.json({ success: true, account: result.rows[0] });
+  } catch (error) {
+    console.error("Error executing delete account query", error);
+    res.status(500).json({ success: false, message: "Error deleting account" });
   }
 });
 
