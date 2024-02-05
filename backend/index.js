@@ -50,26 +50,6 @@ app.use(
   })
 );
 
-const isAuthenticated = (req, res, next) => {
-  if (req.session && req.session.user) {
-    next();
-  } else {
-    res.status(401).json({ success: false, message: "User not authenticated" });
-  }
-};
-
-const isAdmin = (req, res, next) => {
-  if (
-    req.session &&
-    req.session.user &&
-    req.session.user.username == "keeborg"
-  ) {
-    next();
-  } else {
-    res.status(401).json({ success: false, message: "Permission denied" });
-  }
-};
-
 async function createTableIfNotExists() {
   const createPostTableQuery = `
     CREATE TABLE IF NOT EXISTS posts (
@@ -103,7 +83,7 @@ async function createTableIfNotExists() {
 
 createTableIfNotExists();
 
-app.post("/posts", isAuthenticated, async (req, res) => {
+app.post("/posts", async (req, res) => {
   const { title, content, author } = req.body;
   const createPostQuery = `
     INSERT INTO posts (title, content, author)
@@ -182,7 +162,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/register", isAuthenticated, async (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, password } = req.body;
   const login = await registerAccount(username, password);
   if (login) {
@@ -207,7 +187,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.post("/delete-post", isAuthenticated, async (req, res) => {
+app.post("/delete-post", async (req, res) => {
   const { post_id } = req.body;
   const deletePostQuery = `
     DELETE FROM posts
@@ -222,7 +202,7 @@ app.post("/delete-post", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/edit-post", isAuthenticated, async (req, res) => {
+app.post("/edit-post", async (req, res) => {
   const { post_id, title, content } = req.body;
   const editPostQuery = `
     UPDATE posts
@@ -239,7 +219,7 @@ app.post("/edit-post", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/delete-account", isAdmin, async (req, res) => {
+app.post("/delete-account", async (req, res) => {
   const { username } = req.body;
   const deleteAccountQuery = `
       DELETE FROM login
