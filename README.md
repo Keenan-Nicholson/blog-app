@@ -1,3 +1,5 @@
+This blog was a project to help learn Express.js and has been replaced by a simple Hugo blog <a href="https://blog.pirated.tech">here</a>.
+
 # Local Development
 
 ## Run the Docker container to host the database
